@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import axios from "axios";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      user: [],
+    };
+  }
+
+  async getUser() {
+    try {
+      const response = await axios.get(
+        "https://jsonplaceholder.typicode.com/users/1"
+      );
+      this.setState({
+        user: response.data,
+      });
+    } catch (error) {
+      console.error("Error saat mengambil data pengguna:", error);
+    }
+  }
+
+  componentDidMount() {
+    this.getUser();
+  }
+
+  render() {
+    const {user} = this.state;
+    return (
+      <div>
+        <h1>Nama saya adalah {user.name}</h1>
+        <h2>Username saya adalah {user.username}</h2>
+        <h2>Email saya adalah {user.email}</h2>
+        
+      </div>
+    );
+  }
 }
 
 export default App;
